@@ -21,7 +21,7 @@ module.exports = (sequelize,  dataTypes) => {
             defaultValue:0
         },
         release_date : {
-            type : dataTypes.DATE.UNSIGNED,
+            type : dataTypes.DATE,
             allowNull:false
         },
         length : {
