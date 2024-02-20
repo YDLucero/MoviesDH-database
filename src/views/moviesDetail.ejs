@@ -9,7 +9,7 @@
 </head>
 <body>
     <figure>
-        <img src="/img/logo-DH.png" alt="Logo Digital House">
+        <a href="/"><img src="/img/logo-DH.png" alt="Logo Digital House"></a>
     </figure>
     <h1><%= movie.title %> </h1>    
     <br>
@@ -17,6 +17,9 @@
     <p>AWARDS: <%= movie.awards %> </p>
     <p>LENGTH: <%= movie.length + ' min'%> </p>
     <p>RELEASE DATE: <%= movie.release_date %> </p>
+    <p>GENRE: <%= movie.genre_id %> </p>
+    <br>
+    <a href="/movies/edit/<%=movie.id %>">EDITAR</a>
 
 </body>
 </html>
