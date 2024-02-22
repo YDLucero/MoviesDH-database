@@ -49,7 +49,9 @@ module.exports = {
     detail:(req,res)=>{
         const {id} =req.params;
         
-        db.Movie.findByPk(id)  
+        db.Movie.findByPk(id,{
+            include:['genre','actors']
+        })  
             .then((movie)=>{
                 return res.render('moviesDetail',{
                     movie
@@ -111,9 +113,12 @@ module.exports = {
 
         Promise.all([genres, movie])
             .then(([genres, movie]) => {
+
+                //movie.release_date= movie.release_date.toISOString().split('T')[0];
+
                 return res.render('moviesEdit', {
-                    genres,
-                    movie
+                    allGenres:genres,
+                    Movie:movie
                 })
             })
             .catch(error => console.log(error))
@@ -122,16 +127,66 @@ module.exports = {
     },
 
     update: function (req,res) {
-        // TODO
+        const {title, release_date, awards, rating, length, genre_id} =req.body
+        db.Movie.update({
+            title: title.trim(),
+            release_date,
+            awards,
+            rating,
+            length,
+            genre_id
+        },{
+            where: {id:req.params.id}
+        })
+        .then(()=>{
+            res.redirect('/movies/detail/'+ req.params.id)
+        })
+        .catch(error => console.log(error))
+
     },
+
     delete: function (req, res) {
-        // TODO
+        const {id} =req.params;
+        
+        db.Movie.findByPk(id)  
+            .then((movie)=>{
+                return res.render('moviesDelete',{
+                    movie
+                })
+            })
+            .catch(error=> console.log(error))
     },
-    destroy: function (req, res) {
-        // TODO
+
+    destroy:(req, res)=> {
+        
+        db.Actor_Movie.destroy({
+            where:{movie_id:req.params.id}
+        })
+        .then(()=>{
+            db.Actor.update({
+                favorite_movie_id : null
+            },{
+                where:{favorite_movie_id:req.params.id}
+            })
+            .then(()=>{
+                db.Movie.destroy({
+                    where:{id:req.params.id}
+                })
+                .then(()=>{
+                    return res.redirect('/movies')
+                })
+            })
+            
+            
+        })
+        .catch(error=> console.log(error))
     }
+        
+};
+
+
     
 
-}
+
 
 

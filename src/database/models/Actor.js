@@ -23,7 +23,7 @@ module.exports = (sequelize,  dataTypes) => {
         },
         favorite_movie_id : {
             type : dataTypes.INTEGER.UNSIGNED,
-            allowNull : false,
+            allowNull : true,
         },
        
     }
@@ -34,6 +34,20 @@ module.exports = (sequelize,  dataTypes) => {
     }
 
     const Actor = sequelize.define(alias, cols, config)
+
+    //relaciones entre tablas
+    Actor.associate = function (models) {
+        Actor.belongsToMany(models.Movie, {
+            as : 'movies',
+            foreignKey : 'actor_id',
+            otherKey : 'movie_id',
+            through : 'actor_movie'
+        }),
+        Actor.belongsTo(models.Movie, {
+            as : 'favorite',
+            foreignKey : 'favorite_movie_id'
+        })
+    }
 
     return Actor
 }

@@ -18,7 +18,7 @@ router
     .get('/edit/:id', moviesController.edit)
     .put('/update/:id', moviesController.update)
     .get('/delete/:id', moviesController.delete)
-    .delete('/delete/:id', moviesController.destroy)
+    .post('/delete/:id', moviesController.destroy)
  
 
 module.exports = router;

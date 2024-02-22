@@ -16,10 +16,24 @@
     <p>RATING: <%= movie.rating %> </p>
     <p>AWARDS: <%= movie.awards %> </p>
     <p>LENGTH: <%= movie.length + ' min'%> </p>
-    <p>RELEASE DATE: <%= movie.release_date %> </p>
-    <p>GENRE: <%= movie.genre_id %> </p>
+    <p>RELEASE DATE: <%= movie.release_date.toISOString().split('T')[0] %> </p>
+    <p>GENRE: <%= movie.genre? movie.genre.name : 'Sin catalogar' %> </p>
     <br>
-    <a href="/movies/edit/<%=movie.id %>">EDITAR</a>
+    <h4>ACTORS:</h4>
+    <p>
+        <% movie.actors.forEach(actor=> { %>
+            <li>
+                <%= actor.first_name %> <%= actor.last_name %>
+            </li>
+            <% }) %>
+    </p>
+    <br>   
+    <section>
+        <a href="/movies/edit/<%=movie.id %>">EDITAR</a>
+        <br>
+        <a href="/movies/delete/<%=movie.id %>">BORRAR</a>
+    </section>
+    
 
 </body>
 </html>
